@@ -1,0 +1,47 @@
+div.pagination-container{
+    height: 200px;
+}
+
+div.pagination{
+    float: right;
+    margin-top: 30px;
+    margin-right: 20px;
+    box-shadow: 1px 2px 3px #bbbcc1;
+    background-color: #fff;
+    height: 200px;
+    line-height: 200px;
+}
+div.page-number{
+    display: inline-block;
+    background-color: #fff;
+    font-size: 20px;
+}
+
+.current {
+    margin: 0 10px;
+}
+
+div.page-number a{
+    display: inline-block;
+    font-size: 30px;
+    text-decoration: none;
+    color: #000;
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+    width: 250px;
+    text-decoration: none;
+    background-color: #ebebeb;
+}
+
+/* @media screen and (orientation: landscape) {
+    div.main-containor {
+        width : 60%
+    }
+}
+
+@media screen and (orientation: portrait) {
+    div.main-containor {
+        width : 95%
+    }
+} */

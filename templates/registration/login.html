@@ -1,0 +1,146 @@
+{% if form.errors %}
+<p class="err">您的密码和账号不匹配，请重新输入</p>
+{% endif %}
+
+{% if next %}
+{% if user.is_authenticated %}
+<p class="err">您的帐户没有访问此页的权限，请使用有权限的帐户登录。</p>
+{% else %}
+<p class="err">请您登录后再访问此页面</p>
+{% endif %}
+{% endif %}
+<style>
+    body {
+        margin: 0;
+        /*外边距*/
+        padding: 0;
+        /*内边距*/
+        text-align: center;
+        font-family: "Times New Roman", Times, serif, Arial, Helvetica, sans-serif;
+    }
+
+    p.err {
+        display: block;
+        width: 100%;
+        font-size: 18px;
+        color: #F56C6C;
+    }
+
+    .login-form {
+        width: 600px;
+        height: 400px;
+        text-align: center;
+        display: inline-block;
+        margin-top: 150px;
+    }
+
+    .login-form label {
+        width: 100px;
+        display: block;
+        color: rgb(112, 112, 112);
+        margin: 20px 0 0 50px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    .login-form form input {
+        border: 0 !important;
+        border-bottom: 2px solid rgba(145, 145, 145, 0.3) !important;
+        box-shadow: 0px 0px 0px rgba(145, 145, 145, 0.3);
+        background-color: #fff !important;
+        margin: 10px 50px;
+        width: 450px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 18px;
+        color: #3c5169;
+    }
+
+    body .login-form form input:-webkit-autofill,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill {
+        box-shadow: 0 0 0 1000px white inset;
+        -webkit-text-fill-color: #3c5169;
+    }
+
+    body .login-form form input[type=text]:focus,
+    input[type=password]:focus,
+    textarea:focus {
+        box-shadow: 0 0 0 1000px white inset;
+        -webkit-text-fill-color: #3c5169;
+
+    }
+
+    .login-form input:focus {
+        border: 0;
+        outline: none;
+        background-color: #fff !important;
+        border-bottom: 2px solid #3c5169 !important;
+    }
+
+    body .login-form form .submitLogin {
+        display: inline-block;
+        width: 450px;
+        height: 60px;
+        border-radius: 30px;
+        background-color: #3c5169 !important;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    body .login-form form .submitLogin:hover {
+        box-shadow: 0 0 2px 0px #526172;
+    }
+
+    .forget {
+        height: 45px;
+        line-height: 45px;
+        font-size: 18px;
+    }
+
+    .forget a {
+        text-decoration: none;
+        color: #3c5169;
+        display: inline-block;
+        height: 45px;
+        line-height: 45px;
+        width: 70px;
+        background-color: #fff;
+        border-radius: 20px;
+    }
+
+    .forget a:hover {
+        display: inline-block;
+        height: 45px;
+        line-height: 45px;
+        width: 70px;
+        background-color: #3c5169;
+        color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 3px 0px #475a6e;
+    }
+</style>
+
+<div class="login-form">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </div>
+        <div>
+            <td>{{ form.password.label_tag }}</td>
+            <td>{{ form.password }}</td>
+        </div>
+
+        <div>
+            <input class="submitLogin" type="submit" value="登  录" />
+            <input type="hidden" name="next" value="{{ next }}" />
+        </div>
+    </form>
+    <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+</div>

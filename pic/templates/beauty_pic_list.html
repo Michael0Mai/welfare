@@ -1,0 +1,53 @@
+<html>
+{% load static %}
+
+<head>
+    <meta name="referrer" content="same-origin" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{% static 'pic/css/beauty_pic_list.css' %}" />
+</head>
+
+<body>
+    <div>
+        <p style="text-align: center; color: red; font-size: 20px">
+            内容由机器自动生成，图片由新浪网提供，本上料专家不保证内容不会令您不适
+        </p>
+    </div>
+    <div class="main-containor" style="text-align: center">
+        {% for i in pic_list %}
+        <a href="{{i.address_web}}" style="text-align: center">
+            <img class="beauty_pic" src="{{i.address_web}}" /><br />
+        </a>
+        <p>图片由用户：{{i.owner}} 提供</p>
+        <p>======分割线======</p>
+        {% endfor %}
+    </div>
+    <div class="pagination-container">
+        <div class="pagination">
+            <div class="previous page-number">
+                {% if pic_list.has_previous %}
+                <a class="active" href="?page={{ pic_list.previous_page_number }}">上一页</a>
+                {% endif %}
+            </div>
+            <div class="current page-number">
+                &nbsp;第 {{ pic_list.number }} 页 &nbsp; &nbsp;&nbsp;&nbsp;共 {{ pic_list.paginator.num_pages }} 页&nbsp;
+            </div>
+            <div class="next page-number">
+                {% if pic_list.has_next %}
+                <a class="active" href="?page={{ pic_list.next_page_number }}">下一页</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+<script src="{% static 'pic/js/beauty_pic_list.js' %}"></script>
+<script>
+    window.onload = function () {
+        resizr_pic;
+    };
+    window.onresize = function () {
+        resizr_pic();
+    };
+</script>
+
+</html>
