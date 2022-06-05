@@ -54,7 +54,7 @@ class create_beauty_serializer(serializers.ModelSerializer):
         # fields = "__all__"
         exclude = ("liker",)
 
-class liker_only_serializer(serializers.ModelSerializer):
-    class Meta:
-        model = beauty
-        fields = ("id", "liker",)
+# class liker_only_serializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = beauty
+#         fields = ("id", "liker",)

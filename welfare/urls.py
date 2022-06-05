@@ -13,7 +13,7 @@ urlpatterns = [
     
     # 令牌获取和刷新
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'), # 自定义token 信息
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('accounts/', include('django.contrib.auth.urls')),
 
@@ -23,12 +23,11 @@ urlpatterns = [
     url('redoc/', login_required(views.schema_view.with_ui('redoc', cache_timeout=0)), name='schema-redoc'),
 
     #登陆后台管理
-    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
-    path('semad/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')), # 假的后台地址
+    path('secret_manager/', admin.site.urls), # 真的后台地址
     
     path('pic/', include("pic.urls")),
-    #path('organizational_structure/', include("organizational_structure.urls")),
     path('users/', include("users.urls")),
     url(r'^$', pic_views.beauties_list),
-    url('status_codes/', views.status_codes),
+    url('status_codes/', views.status_codes), 
 ]
