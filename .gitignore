@@ -5,4 +5,4 @@ DBO copy.txt
 /*/migrations/*
 web.config
 /statics/*
-import_data.ipynb
+import_data.ipynb.bak
