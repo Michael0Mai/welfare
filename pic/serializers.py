@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class beauty_serializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    liker = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field='username')
+    # liker = serializers.SlugRelatedField(queryset=User.objects.all(), many=True, slug_field='username')
     liker_count = serializers.SerializerMethodField()
     is_like = serializers.SerializerMethodField()
     class Meta:
