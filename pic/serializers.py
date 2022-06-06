@@ -12,7 +12,7 @@ class beauty_serializer(serializers.ModelSerializer):
         model = beauty
         # exclude = ("liker",)
         fields = "__all__"
-        read_only_fields = ('created_time',)
+        read_only_fields = ('created_time', 'owner', 'liker', 'address_web')
 
     def get_liker_count(self, obj):
         return obj.liker.count()
