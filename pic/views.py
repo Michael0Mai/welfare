@@ -12,12 +12,12 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.models import TokenUser
 from django.db.models import Q
-
-
 import uuid
+from rest_framework.response import Response
+from rest_framework import status
 
 class beauties(viewsets.ModelViewSet):
-    queryset =  beauty.objects.all()
+    queryset =  beauty.objects.all().filter(is_delete=False)
     filter_class = beauty_filter
     # permission_classes = (permissions.DjangoModelPermissions, IsOwnerOrReadOnly)
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly, IsOwnerOrReadOnly)
@@ -28,6 +28,25 @@ class beauties(viewsets.ModelViewSet):
             return beauty_serializer
     def perform_create(self, serializer):
         serializer.save(owner = self.request.user)
+
+class beauties_manager(viewsets.ModelViewSet):
+    queryset =  beauty.objects.all()
+    filter_class = beauty_filter
+    permission_classes = (permissions.IsAdminUser,)
+    def get_serializer_class(self):
+        return beauty_serializer_manager
+    
+    # def list(self, request, *args, **kwargs):
+    #     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    # def retrieve(self, request, *args, **kwargs):
+    #     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    def create(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    def update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    def partial_update(self, request, *args, **kwargs):
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
 
 # class beauties(viewsets.ModelViewSet):
 #     filter_class = beauty_filter

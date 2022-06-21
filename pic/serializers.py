@@ -10,9 +10,10 @@ class beauty_serializer(serializers.ModelSerializer):
     is_like = serializers.SerializerMethodField()
     class Meta:
         model = beauty
-        # exclude = ("liker",)
-        fields = "__all__"
-        read_only_fields = ('created_time', 'owner', 'liker', 'address_web')
+        exclude = ("liker",)
+        # fields = "__all__"
+        read_only_fields = ('created_time', 'owner', 'address_web')
+        # read_only_fields = ('created_time', 'owner', 'liker', 'address_web')
 
     def get_liker_count(self, obj):
         return obj.liker.count()
@@ -48,11 +49,17 @@ class beauty_serializer(serializers.ModelSerializer):
 #                 data['is_like'] =False
 #         return data
 
+class beauty_serializer_manager(beauty_serializer):
+    class Meta(beauty_serializer.Meta):
+        exclude = ("liker",)
+        read_only_fields = ('created_time', 'owner', 'address_web', 'remark')
+
+
 class create_beauty_serializer(serializers.ModelSerializer):
     class Meta:
         model = beauty
         # fields = "__all__"
-        exclude = ("liker",)
+        exclude = ("liker", "created_time")
 
 # class liker_only_serializer(serializers.ModelSerializer):
 #     class Meta:

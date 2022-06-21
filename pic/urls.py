@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'beauties', views.beauties, basename='beauties')
+router.register(r'beauties_manager', views.beauties_manager, basename='beauties_manager')
 
 urlpatterns = [
     path('', include(router.urls)), # drf 自动注册路由
