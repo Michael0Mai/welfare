@@ -28,7 +28,7 @@ class user_serializer(serializers.ModelSerializer):
     groups = group_serializer(many=True, read_only=True)
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "user_permissions", "groups")
+        fields = ("id", "username", "first_name", "last_name", "user_permissions", "groups")
         # exclude = ('id',)
 
 class user_serializer_update(serializers.ModelSerializer):

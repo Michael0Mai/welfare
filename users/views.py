@@ -36,16 +36,12 @@ class create_user(viewsets.ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
-
 class current_user(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset =  User.objects.all().filter(id = self.request.user.id)
-        # queryset =  self.request.user.id
         return queryset
-    # filter_class = user_filter
     pagination_class = None
-    # permission_classes = permissions.IsAuthenticated
+
     def get_serializer_class(self):
         return user_serializer
     def retrieve(self, request, *args, **kwargs):
