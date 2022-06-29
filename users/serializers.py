@@ -23,12 +23,12 @@ class simple_user_serializer(serializers.ModelSerializer):
         model = User
         fields = ("username",)
 
-class user_serializer(serializers.ModelSerializer):
+class user_serializer(simple_user_serializer, serializers.HyperlinkedModelSerializer):
     user_permissions = permission_serializer(many=True, read_only=True)
     groups = group_serializer(many=True, read_only=True)
     class Meta:
         model = User
-        fields = ("id", "username", "first_name", "last_name", "user_permissions", "groups")
+        fields = ("id", "url", "username", "first_name", "last_name", "user_permissions", "groups")
         # exclude = ('id',)
 
 class user_serializer_update(serializers.ModelSerializer):
