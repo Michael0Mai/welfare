@@ -2,9 +2,6 @@ from rest_framework.views import exception_handler
 from rest_framework.renderers import JSONRenderer
 from rest_framework.views import exception_handler
 from rest_framework.pagination import PageNumberPagination
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-# from rest_framework_simplejwt.views import TokenObtainPairView
-# from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
 
 def custom_exception_handler(exc, context): # 异常处理
     # Call REST framework's default exception handler first,
@@ -15,7 +12,6 @@ def custom_exception_handler(exc, context): # 异常处理
         response.data['status_code'] = response.status_code
 
     return response
-
 
 class customrenderer(JSONRenderer): #自定义正常返回
     def render(self, data, accepted_media_type=None, renderer_context=None): # 重构render方法    
@@ -64,18 +60,3 @@ class MyPageNumberPagination(PageNumberPagination): # 分页器
 #             return super().render(data, accepted_media_type, renderer_context)
 #         else:
 #             return super().render(data, accepted_media_type, renderer_context)
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        # Add custom claims
-        token['name'] = user.name
-        return token
-
-# class MyTokenObtainPairView(TokenObtainPairView):
-#     permission_classes = (AllowAny,)
-#     serializer_class = MyTokenObtainPairSerializer 
-
-

@@ -4,17 +4,18 @@ from django.contrib import admin
 from . import views
 from pic import views as pic_views
 from django.contrib.auth.decorators import login_required
-
-from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
-# from welfare.utils import MyTokenObtainPairView
+# from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
+from welfare.utils_token import MyTokenObtainPairView, MyTokenRefreshView, MyTokenVerifyView
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls')), #DRF 的登录视图，为你的可视化接口页面生成一个用户登录的入口
     
     # 令牌获取和刷新
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'), # 自定义token 信息
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'), # 自定义 token 信息
+    # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/refresh/', MyTokenRefreshView.as_view(), name='token_refresh'), # 自定义刷新 token 信息
+    path('token/verify', MyTokenVerifyView.as_view(), name='token_verify'), # 自定义验证 token 信息
     path('accounts/', include('django.contrib.auth.urls')),
 
     # 接口描述
