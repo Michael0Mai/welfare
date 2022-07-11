@@ -9,19 +9,21 @@
 
 <body>
     <div>
-        <p style="text-align: center; color: red; font-size: 20px">
+        <p style="text-align: center; color: rgb(185, 164, 164); font-size: 10px">
             内容由机器自动生成，图片由新浪网提供，本上料专家不保证内容不会令您不适
         </p>
     </div>
+    
     <div class="main-containor" style="text-align: center">
         {% for i in pic_list %}
         <a href="{{i.address_web}}" style="text-align: center">
             <img class="beauty_pic" src="{{i.address_web}}" /><br />
         </a>
-        <p>图片由用户：{{i.owner}} 提供</p>
-        <p>======分割线======</p>
+        <p style="color:rgb(87, 145, 237); font-size: 10px">图片由用户：<span style="color:deeppink; font-size: 30px">{{i.owner}}</span> 提供</p>
+        <p style="color:#62995bc8; font-size: 10px">======分割线======</p>
         {% endfor %}
     </div>
+    
     <div class="pagination-container">
         <div class="pagination">
             <div class="previous page-number">
@@ -40,10 +42,12 @@
         </div>
     </div>
 </body>
+
 <script src="{% static 'pic/js/beauty_pic_list.js' %}"></script>
+
 <script>
     window.onload = function () {
-        resizr_pic;
+        resizr_pic();
     };
     window.onresize = function () {
         resizr_pic();
