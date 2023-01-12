@@ -1,0 +1,166 @@
+<html>
+    <head></head>
+    <body>
+        <div class="codes">
+            <table>
+                <caption>状态码</caption>
+                <thead>
+                    <tr>
+                        <th>状态码</th> <th>请求方式</th> <th>含义</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>200 OK</td>
+                        <td>GET</td>
+                        <td>服务器成功返回用户请求的数据, 该操作是幂等的(Idempotent)</td>
+                    </tr>     
+                    <tr>
+                        <td>201 CREATED</td>
+                        <td>POST/PUT/PATCH</td>
+                        <td>用户新建或修改数据成功</td>
+                    </tr>  
+                    <tr>
+                        <td>202 Accepted</td>
+                        <td>*</td>
+                        <td>表示一个请求已经进入后台排队(异步任务)</td>
+                    </tr>  
+                    <tr>
+                        <td>204 NO CONTENT</td>
+                        <td>DELETE</td>
+                        <td>用户删除数据成功</td>
+                    </tr>  
+                    <tr>
+                        <td>400 INVALID REQUEST</td>
+                        <td>POST/PUT/PATCH</td>
+                        <td>用户发出的请求有错误, 服务器没有进行新建或修改数据的操作, 该操作是幂等的</td>
+                    </tr>  
+                    <tr>
+                        <td>401 Unauthorized</td>
+                        <td>*</td>
+                        <td>表示用户没有权限(令牌、用户名、密码错误)</td>
+                    </tr>  
+                    <tr>
+                        <td>403 Forbidden</td>
+                        <td>*</td>
+                        <td>表示用户得到授权(与401错误相对), 但是访问是被禁止的</td>
+                    </tr>  
+                    <tr>
+                        <td>404 NOT FOUND</td>
+                        <td>*</td>
+                        <td>用户发出的请求针对的是不存在的记录, 服务器没有进行操作, 该操作是幂等的</td>
+                    </tr>               
+                    <tr>
+                        <td>406 Not Acceptable</td>
+                        <td>GET</td>
+                        <td>用户请求的格式不可得(比如用户请求JSON格式, 但是只有XML格式)</td>
+                    </tr>  
+                    <tr>
+                        <td>410 Gone</td>
+                        <td>GET</td>
+                        <td>用户请求的资源被永久删除, 且不会再得到的</td>
+                    </tr>  
+                    <tr>
+                        <td>422 Unprocesable entity</td>
+                        <td>POST/PUT/PATCH</td>
+                        <td>当创建一个对象时, 发生一个验证错误</td>
+                    </tr>  
+                    <tr>
+                        <td>500 INTERNAL SERVER ERROR</td>
+                        <td>*</td>
+                        <td>服务器发生错误</td>
+                    </tr>   
+                    
+
+                </tbody>                
+            </table>
+            <table>
+                <caption>
+                    请求方式
+                </caption>
+                <thead>
+                    <tr>
+                        <th>请求</th> <th>返回</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>GET/collection</td>
+                        <td>资源对象的列表（数组）</td>
+                    </tr>  
+                    <tr>
+                        <td>GET/collection/response</td>
+                        <td>单个资源对象</td>
+                    </tr>  
+                    <tr>
+                        <td>POST/collection</td>
+                        <td>新生成的资源对象</td>
+                    </tr>  
+                    <tr>
+                        <td>PUT/collection/response</td>
+                        <td>完整的资源对象</td>
+                    </tr>  
+                    <tr>
+                        <td>PATCH/collection/response</td>
+                        <td>完整的资源对象</td>
+                    </tr>  
+                    <tr>
+                        <td>DELETE/collection/response</td>
+                        <td>返回一个空文档</td>
+                    </tr>  
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
+
+<style>
+    div.codes{
+        font-size: 18px;
+        margin: 20px;
+    }
+
+    table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    }
+
+    table caption{
+        font-size: 2em;
+        font-weight: bold;
+        margin: 1em 0;
+    }
+
+    th,td{
+        border: 1px solid #999;
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    table thead tr{
+        background-color: #008c8c;
+        color: #fff;
+    }
+
+    table tbody tr:nth-child(odd){
+        background-color: #eee;
+    }
+
+    table tbody tr:hover{
+        background-color: #ccc;
+    }
+
+    table tbody tr td:first-child{
+        color: #f40;
+    }
+
+    table tfoot tr td{
+        text-align: right;
+        padding-right: 20px;
+    }
+</style>
+
+
+
+

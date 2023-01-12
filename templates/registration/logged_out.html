@@ -1,0 +1,41 @@
+<style>
+  body {
+    text-align: center;
+    margin-top: 250px;
+  }
+
+  .main-logout {
+    display: inline-block;
+    width: 500px;
+    height: 300px;
+    font-size: 30px;
+  }
+
+  .main-logout a {
+    text-decoration: none;
+    color: #3c5169;
+    display: inline-block;
+    width: 350px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #fff;
+    border-radius: 20px;
+    font-size: 26px;
+  }
+
+  .main-logout a:hover {
+    display: inline-block;
+    width: 350px;
+    height: 60px;
+    line-height: 60px;
+    background-color: #3c5169;
+    color: #fff;
+    border-radius: 20px;
+    font-style: 26px;
+  }
+</style>
+
+<div class="main-logout">
+  <p>退出系统成功！</p>
+  <a href="{% url 'login'%}">点击我返回登录页面</a>
+</div>

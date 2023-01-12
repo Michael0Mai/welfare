@@ -1,0 +1,9 @@
+welfare/settings.py
+DBO copy.txt
+/.ipynb_checkpoints/*
+/*/__pycache__/*
+/*/migrations/*
+web.config
+/statics/*
+import_data.ipynb.bak
+media/*

@@ -1,0 +1,13 @@
+﻿python manage.py migrate   # 创建表结构
+
+python manage.py makemigrations pic  # 让 Django 知道我们在我们的模型有一些变更
+python manage.py migrate pic   # 创建表结构
+
+
+python manage.py createsuperuser
+
+
+
+D:
+cd D:\code\welfare
+python manage.py runserver 0.0.0.0:8000

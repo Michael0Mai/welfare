@@ -1,0 +1,83 @@
+<html>
+{% load static %}
+
+<head>
+    <meta name="referrer" content="same-origin" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="{% static 'pic/css/beauty_pic_list.css' %}" />
+</head>
+
+<body>
+    <div>
+        <p style="text-align: center; color: rgb(185, 164, 164); font-size: 10px">
+            内容由机器自动生成，图片由新浪网提供，本上料专家不保证内容不会令您不适
+        </p>
+    </div>
+    <div class=button_container>
+        <a href="{% url 'index_read' %}">
+            <button type="button">首 页</button>
+        </a>
+        {% if is_local %}
+        <a href="{% url 'beauties_list_app:beauties_list_web' %}">
+            <button type="button">观摩网络图片</button>
+        </a>
+        {% else %}
+        <a href="{% url 'beauties_list_app:beauties_list_local' %}">
+            <button type="button">观摩本地图片</button>
+        </a>
+        {% endif %}
+    </div>
+    
+    <div class="main-containor" style="text-align: center">
+        <!-- <a href="{{ MEDIA_URL }}food.jpg" style="text-align: center">
+            <img class="beauty_pic" src="{{ MEDIA_URL }}food.jpg" /><br />
+        </a>
+        <p style="color:#62995bc8; font-size: 10px">======分割线======</p> -->
+        
+        {% for i in pic_list %}
+            {% if not is_local %}
+            <a href="{{i.address_web}}" style="text-align: center">
+                <img class="beauty_pic" src="{{i.address_web}}" /><br />
+            </a>
+            {% else %}
+            <a href="{{MEDIA_URL}}{{ i.file_path}}" style="text-align: center">
+                <img class="beauty_pic" src="{{MEDIA_URL}}{{ i.file_path}}" /><br />
+            </a>
+            {% endif %}
+        <p style="color:rgb(87, 145, 237); font-size: 10px">图片由用户：<span style="color:deeppink; font-size: 30px">{{i.owner}}</span> 提供</p>
+        <p style="color:#62995bc8; font-size: 10px">======分割线======</p>
+        {% endfor %}
+
+    </div>
+    
+    <div class="pagination-container">
+        <div class="pagination">
+            <div class="previous page-number">
+                {% if pic_list.has_previous %}
+                <a class="active" href="?page={{ pic_list.previous_page_number }}">上一页</a>
+                {% endif %}
+            </div>
+            <div class="current page-number">
+                &nbsp;第 {{ pic_list.number }} 页 &nbsp; &nbsp;&nbsp;&nbsp;共 {{ pic_list.paginator.num_pages }} 页&nbsp;
+            </div>
+            <div class="next page-number">
+                {% if pic_list.has_next %}
+                <a class="active" href="?page={{ pic_list.next_page_number }}">下一页</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="{% static 'pic/js/beauty_pic_list.js' %}"></script>
+
+<script>
+    window.onload = function () {
+        resizr_pic();
+    };
+    window.onresize = function () {
+        resizr_pic();
+    };
+</script>
+
+</html>

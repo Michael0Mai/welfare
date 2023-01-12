@@ -1,0 +1,80 @@
+/* @media screen and (orientation: landscape) {
+    div.main-containor {
+        width : 60%
+    }
+}
+
+@media screen and (orientation: portrait) {
+    div.main-containor {
+        width : 95%
+    }
+} */
+
+div.pagination-container{
+    height: 50px;
+}
+
+div.pagination{
+    float: right;
+    margin-top: 30px;
+    margin-right: 20px;
+    box-shadow: 1px 2px 3px #bbbcc1;
+    background-color: #fff;
+    height: 50px;
+    line-height: 50px;
+}
+div.page-number{
+    display: inline-block;
+    background-color: #fff;
+    font-size: 18px;
+}
+
+.current {
+    margin: 0 10px;
+}
+
+div.page-number a{
+    display: inline-block;
+    font-size: 18px;
+    text-decoration: none;
+    color: #000;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    width: 90px;
+    text-decoration: none;
+    background-color: #ebebeb;
+}
+
+div.page-number a:hover{
+    display: inline-block;
+    font-size: 18px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    width: 90px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #3c5169;
+    box-shadow: 0 0 5px #3c5169;
+}
+
+button{
+    background-color:dodgerblue;
+    color:white;
+    width: 200px;
+    height: 47px;
+    border:0;
+    font-size: 16px;			
+    border-radius: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
+} 
+
+div.button_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
