@@ -3,7 +3,7 @@ import json
 from pic.models import *
 from pic.serializers import *
 from pic.filters import *
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
 from pic.permissions import IsOwnerOrReadOnly
 from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
@@ -14,7 +14,6 @@ from rest_framework_simplejwt.models import TokenUser
 from django.db.models import Q
 import uuid
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import action
 from pic.utils import img_proccess_save
 from drf_yasg.utils import swagger_auto_schema
@@ -23,7 +22,6 @@ from django.utils.decorators import method_decorator
 class beauties(viewsets.ModelViewSet):
     queryset =  beauty.objects.all().filter(is_delete=False)
     filter_class = beauty_filter
-    # permission_classes = (permissions.DjangoModelPermissions, IsOwnerOrReadOnly)
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly, IsOwnerOrReadOnly) # 只能修改自己的东西，superuser也不能改别人的东西
     tags = ['图片网址']
 
@@ -134,10 +132,9 @@ class beauties_local(viewsets.ModelViewSet):
     #         image = serializer.validated_data['file_path']
     #         img_file = self.request.user # 图片存储的文件夹
 
-    #         img_name = save_img(image, img_file)
-    #         img_url = get_img_url(request, img_file, img_name)
+    #         img_name, img_backend_relative_path = img_proccess_save(image, img_file)
             
-    #         return Response(status=status.HTTP_201_CREATED, data=img_url)
+    #         return Response(status=status.HTTP_201_CREATED, data=img_backend_relative_path)
     #     # 未知错误，报服务器内部错误
     #     except Exception as error:
     #         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"detail": "服务器内部错误"})

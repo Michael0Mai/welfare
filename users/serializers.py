@@ -26,10 +26,16 @@ class simple_user_serializer(serializers.ModelSerializer):
 class user_serializer(simple_user_serializer, serializers.HyperlinkedModelSerializer):
     user_permissions = permission_serializer(many=True, read_only=True)
     groups = group_serializer(many=True, read_only=True)
-    class Meta:
-        model = User
+    class Meta(simple_user_serializer.Meta):
         fields = ("id", "url", "username", "first_name", "last_name", "user_permissions", "groups")
         # exclude = ('id',)
+
+class user_serializer_change_password(simple_user_serializer):
+    new_password = serializers.CharField()
+    class Meta(simple_user_serializer.Meta):
+        fields = ("id", "username", "new_password", "password", "is_active")
+        write_only_fields = ("password", "new_password")
+        read_only_fields = ("id", "username", "is_active")
 
 class user_serializer_update(serializers.ModelSerializer):
     user_permissions = permission_serializer(many=True, read_only=True)

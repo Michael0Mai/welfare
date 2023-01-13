@@ -28,7 +28,7 @@ def user_directory_path(instance, filename):
     return os.path.join(instance.owner.id, filename) # return the whole path to the file
 
 class beauty_local(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name='ID') # 32位的设备ID
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, verbose_name='ID') # 32位的ID
     file_path = models.ImageField(upload_to = 'uploads', verbose_name='路径')
     file_name = models.TextField(blank=True, null=True, verbose_name='文件名')
     created_time = models.DateTimeField(default=timezone.now, verbose_name='生成时间')

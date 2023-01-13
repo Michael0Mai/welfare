@@ -1,13 +1,14 @@
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets, permissions
 from django.db.models import Q
 from django.contrib.auth.models import User
 # from django.contrib.auth.models import Permission
 from users.serializers import *
-from rest_framework import viewsets, permissions
 from users.filters import *
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
+from rest_framework.decorators import action
+from django.contrib.auth.hashers import check_password, make_password
 
 class users(viewsets.ModelViewSet):
     queryset =  User.objects.filter(~Q(is_superuser = 1)).all()
@@ -49,16 +50,37 @@ class create_user(viewsets.ModelViewSet):
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(auto_schema=None,),) # 隐藏详细信息接口
 @method_decorator(name = "list", decorator=swagger_auto_schema(operation_description="查看当前用户信息",),)
 class current_user(viewsets.ReadOnlyModelViewSet):
+    pagination_class = None
     tags = ['当前用户']
     def get_queryset(self):
         queryset =  User.objects.all().filter(id = self.request.user.id)
         return queryset
-    pagination_class = None
 
     def get_serializer_class(self):
-        return user_serializer
+        if self.action == "list":
+            return user_serializer
+        else:
+            return user_serializer_change_password
     def retrieve(self, request, *args, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED, data={"detail": "不允许此操作"})
+    
+    @action(methods=['patch'], detail=False, url_path="change_password")
+    def change_password(self, request, *args, **kwargs):
+        try:
+            user_obj =  User.objects.get(id = self.request.user.id)
+            serializer = user_serializer_change_password(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            password = serializer.validated_data['password']
+            new_password = serializer.validated_data['new_password']
+            if check_password(password, user_obj.password):
+                user_obj.password = make_password(new_password)
+                user_obj.save()
+                return Response(status=status.HTTP_201_CREATED, data={"detail": "密码修改成功"})
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED, data={"detail": "账号或密码错误"})
+        # 未知错误，报服务器内部错误
+        except Exception as error:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"detail": "服务器内部错误"})
 
 # class permission(viewsets.ReadOnlyModelViewSet):
 #     queryset =  Permission.objects.all()

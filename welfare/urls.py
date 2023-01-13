@@ -3,7 +3,6 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 from django.contrib import admin
 from . import views
-from pic import views as pic_views
 from django.contrib.auth.decorators import login_required
 # from rest_framework_simplejwt.views import (TokenObtainPairView,TokenRefreshView,)
 from welfare.utils_token import MyTokenObtainPairView, MyTokenRefreshView, MyTokenVerifyView
@@ -32,8 +31,6 @@ urlpatterns = [
     path('pic/', include("pic.urls")),
     path('users/', include("users.urls")),
 
-    # url('web', pic_views.beauties_list, name='web_pic'),
-    # url('local', pic_views.beauties_local_list, name='local_pic'),
     url('status_codes/', views.status_codes), 
     url(r'^$', views.index_read, name='index_read'), 
 
