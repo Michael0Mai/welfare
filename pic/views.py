@@ -28,6 +28,8 @@ class beauties(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return create_beauty_serializer
+        elif self.action == 'add_like':
+            return beauty_serializer_add_like
         else:
             return beauty_serializer
     def perform_create(self, serializer):
@@ -39,6 +41,23 @@ class beauties(viewsets.ModelViewSet):
         serializer = beauty_address_only_serializer(instance=queryset, many=True)
         return Response(serializer.data)
     
+    @action(methods=['post'], detail=False, url_path="add_like", permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,))
+    def add_like(self, request, *args, **kwargs):      
+        serializer = beauty_serializer_add_like(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        pic_id = serializer.validated_data['pic_id']
+        try:
+            pic_obj = beauty.objects.get(id=pic_id)
+        except beauty.DoesNotExist:
+            return Response(status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE, data={'detail':"图片 ID 不正确"})
+        if self.request.user not in pic_obj.liker.all():
+            pic_obj.liker.add(self.request.user.id)
+            pic_obj.save()
+            return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片不存在 or 已经赞过了。"})
+
+ 
     # @action(methods=['get', 'delete', 'patch'], detail=True, url_path="manager")
     # def manager(self, request, pk, *args, **kwargs):
     #     queryset =  beauty.objects.all().filter(id=pk)
@@ -105,6 +124,8 @@ class beauties_local(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return create_beauty_local_serializer
+        elif self.action == "add_like":
+            return beauty_local_serializer_add_like
         else:
             return beauty_local_serializer
     def perform_create(self, serializer):
@@ -138,6 +159,22 @@ class beauties_local(viewsets.ModelViewSet):
     #     # 未知错误，报服务器内部错误
     #     except Exception as error:
     #         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"detail": "服务器内部错误"})
+
+    @action(methods=['post'], detail=False, url_path="add_like", permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,))
+    def add_like(self, request, *args, **kwargs):      
+        serializer = beauty_local_serializer_add_like(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        pic_id = serializer.validated_data['pic_id']
+        try:
+            pic_obj = beauty_local.objects.get(id=pic_id)
+        except beauty_local.DoesNotExist:
+            return Response(status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE, data={'detail':"图片 ID 不正确"})
+        if self.request.user not in pic_obj.liker.all():
+            pic_obj.liker.add(self.request.user.id)
+            pic_obj.save()
+            return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片不存在 or 已经赞过了。"})
 
 
 # @method_decorator(name = "retrieve", decorator=swagger_auto_schema(auto_schema=None,),) # 隐藏详细信息接口
@@ -204,35 +241,41 @@ def beauties_local_list(request):
 
 
 
-@csrf_exempt
-def add_like(request):
-    if request.method != 'GET':
-        res = {"detail": "只允许 “GET” 方法。", "status_code": 405}
-    else:       
-        pic_id = request.GET.get('id')
-        if not check_uuid4(pic_id):
-            res = {'id':"输入不是有效的 UUID", "status_code": 400}
-        else:
-            JWT_authenticator = JWTAuthentication()
-            try: # 检查 token，只能合法注册用户点赞
-                user, token = JWT_authenticator.authenticate(request) # 拿到 user 和 token
-                had_liked = beauty.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=TokenUser(token).id)).exists() # 同时检查图片存在和是否已经赞过
-                if had_liked: # 未赞过
-                    like_pic = beauty.objects.filter(id=pic_id).first()
-                    like_pic.liker.add(user)
-                    res = {"detail": "点赞成功。", "status_code": 200}
-                else:
-                    res = {"detail": "图片不存在 or 已经赞过了。", "status_code": 404}
-            except:
-                res = {"detail": "未登录", "status_code": 401}
+# @csrf_exempt
+# def add_like(request):
+#     if request.method != 'GET':
+#         res = {"detail": "只允许 “GET” 方法。", "status_code": 405}
+#     else:       
+#         pic_id = request.GET.get('id')
+#         if not check_uuid4(pic_id):
+#             res = {'id':"输入不是有效的 UUID", "status_code": 400}
+#         else:
+#             JWT_authenticator = JWTAuthentication()
+#             try: # 检查 token，只能合法注册用户点赞
+#                 user, token = JWT_authenticator.authenticate(request) # 拿到 user 和 token
+#                 had_liked = beauty.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=TokenUser(token).id)).exists() # 同时检查图片存在和是否已经赞过
+#                 if had_liked: # 未赞过
+#                     like_pic = beauty.objects.filter(id=pic_id).first()
+#                     like_pic.liker.add(user)
+#                     res = {"detail": "点赞成功。", "status_code": 200}
+#                 else:
+#                     res = {"detail": "图片不存在 or 已经赞过了。", "status_code": 404}
+#             except:
+#                 res = {"detail": "未登录", "status_code": 401}
     
-    return HttpResponse(
-            json.dumps(res, ensure_ascii=False),
-            content_type="application/json,charset=utf-8"
-            )
+#     return HttpResponse(
+#             json.dumps(res, ensure_ascii=False),
+#             content_type="application/json,charset=utf-8"
+#             )
 
-def check_uuid4(test_uuid):
-    try:
-        return uuid.UUID(test_uuid).version
-    except ValueError:
-        return False
+# def check_uuid4(test_uuid):
+#     try:
+#         return uuid.UUID(test_uuid).version
+#     except ValueError:
+#         return False
+
+# def check_uuid4_ok(test_uuid):
+#     try:
+#         return test_uuid.version
+#     except ValueError:
+#         return False

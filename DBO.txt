@@ -11,3 +11,7 @@ python manage.py createsuperuser
 D:
 cd D:\code\welfare
 python manage.py runserver 0.0.0.0:8000
+
+git add .
+git commit -m "增加了用户修改密码 API"
+git push

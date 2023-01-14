@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from pic.models import *
 # from users.serializers import simple_user_serializer
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 
 class beauty_serializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -32,6 +32,12 @@ class beauty_address_only_serializer(serializers.ModelSerializer):
         model = beauty
         fields = ('address_web',)
         read_only_fields = ('address_web',)
+
+class beauty_serializer_add_like(serializers.ModelSerializer):
+    pic_id = serializers.UUIDField()
+    class Meta:
+        model = beauty
+        fields =  ("pic_id",)
 
 class beauty_serializer_manager(beauty_serializer):
     class Meta(beauty_serializer.Meta):
@@ -101,6 +107,11 @@ class beauty_local_serializer(serializers.ModelSerializer):
 #                 data['is_like'] =False
 #         return data
 
+class beauty_local_serializer_add_like(serializers.ModelSerializer):
+    pic_id = serializers.UUIDField()
+    class Meta:
+        model = beauty_local
+        fields =  ("pic_id",)
 
 class beauty_local_serializer_manager(beauty_local_serializer):
     class Meta(beauty_local_serializer.Meta):

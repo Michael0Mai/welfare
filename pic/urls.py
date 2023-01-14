@@ -14,5 +14,5 @@ urlpatterns = [
     path('', include(router.urls)), # drf 自动注册路由
     path("beauties_list/", views.beauties_list, name = 'beauties_list_web'),
     path("beauties_local_list/", views.beauties_local_list, name = 'beauties_list_local'),
-    path("add_like/", views.add_like),
+    # path("add_like/", views.add_like),
 ]
