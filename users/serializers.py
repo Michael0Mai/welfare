@@ -33,9 +33,9 @@ class user_serializer(simple_user_serializer, serializers.HyperlinkedModelSerial
 class user_serializer_change_password(simple_user_serializer):
     new_password = serializers.CharField()
     class Meta(simple_user_serializer.Meta):
-        fields = ("id", "username", "new_password", "password", "is_active")
+        fields = ( "new_password", "password")
         write_only_fields = ("password", "new_password")
-        read_only_fields = ("id", "username", "is_active")
+        # read_only_fields = ("id", "username", "is_active")
 
 class user_serializer_update(serializers.ModelSerializer):
     user_permissions = permission_serializer(many=True, read_only=True)
