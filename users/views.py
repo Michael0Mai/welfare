@@ -64,7 +64,7 @@ class current_user(viewsets.ReadOnlyModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED, data={"detail": "不允许此操作"})
     
-    @action(methods=['post'], detail=False, url_path="change_password")
+    @action(methods=['post'], detail=False, url_path="change_password", permission_classes = (permissions.IsAuthenticated,))
     def change_password(self, request, *args, **kwargs):
         try:
             user_obj =  User.objects.get(id = self.request.user.id)
