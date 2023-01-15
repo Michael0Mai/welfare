@@ -46,16 +46,14 @@ class beauties(viewsets.ModelViewSet):
         serializer = beauty_serializer_add_like(data=request.data)
         serializer.is_valid(raise_exception=True)
         pic_id = serializer.validated_data['pic_id']
-        try:
+        had_liked = beauty.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=self.request.user.id)).exists() # 同时检查图片存在和是否已经赞过
+        if had_liked: 
             pic_obj = beauty.objects.get(id=pic_id)
-        except beauty.DoesNotExist:
-            return Response(status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE, data={'detail':"图片 ID 不正确"})
-        if self.request.user not in pic_obj.liker.all():
             pic_obj.liker.add(self.request.user.id)
             pic_obj.save()
             return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
         else:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片不存在 or 已经赞过了。"})
+            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片 ID 不正确 or 已经赞过了。"})
 
  
     # @action(methods=['get', 'delete', 'patch'], detail=True, url_path="manager")
@@ -165,11 +163,9 @@ class beauties_local(viewsets.ModelViewSet):
         serializer = beauty_local_serializer_add_like(data=request.data)
         serializer.is_valid(raise_exception=True)
         pic_id = serializer.validated_data['pic_id']
-        try:
-            pic_obj = beauty_local.objects.get(id=pic_id)
-        except beauty_local.DoesNotExist:
-            return Response(status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE, data={'detail':"图片 ID 不正确"})
-        if self.request.user not in pic_obj.liker.all():
+        had_liked = beauty_local.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=self.request.user.id)).exists() # 同时检查图片存在和是否已经赞过
+        if had_liked:
+            pic_obj = beauty_local.objects.get(id=pic_id)  
             pic_obj.liker.add(self.request.user.id)
             pic_obj.save()
             return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
