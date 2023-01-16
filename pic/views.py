@@ -1,5 +1,3 @@
-from pymysql import NULL
-import json
 from pic.models import *
 from pic.serializers import *
 from pic.filters import *
@@ -8,16 +6,19 @@ from pic.permissions import IsOwnerOrReadOnly
 from django.shortcuts import render
 from django.http import HttpResponse, FileResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.models import TokenUser
 from django.db.models import Q
-import uuid
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from pic.utils import img_proccess_save
 from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
+
+# from django.views.decorators.csrf import csrf_exempt
+# from rest_framework_simplejwt.authentication import JWTAuthentication
+# from rest_framework_simplejwt.models import TokenUser
+# import json
+# import uuid
+# from pymysql import NULL
 
 class beauties(viewsets.ModelViewSet):
     queryset =  beauty.objects.all().filter(is_delete=False)
@@ -41,21 +42,30 @@ class beauties(viewsets.ModelViewSet):
         serializer = beauty_address_only_serializer(instance=queryset, many=True)
         return Response(serializer.data)
     
-    @action(methods=['post'], detail=False, url_path="add_like", permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,))
-    def add_like(self, request, *args, **kwargs):      
-        serializer = beauty_serializer_add_like(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        pic_id = serializer.validated_data['pic_id']
-        had_liked = beauty.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=self.request.user.id)).exists() # 同时检查图片存在和是否已经赞过
-        if had_liked: 
-            pic_obj = beauty.objects.get(id=pic_id)
+    # @action(methods=['post'], detail=False, url_path="add_like", permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,))
+    # def add_like(self, request, *args, **kwargs):      
+    #     serializer = beauty_serializer_add_like(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     pic_id = serializer.validated_data['pic_id']
+    #     had_liked = beauty.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=self.request.user.id)).exists() # 同时检查图片存在和是否已经赞过
+    #     if had_liked: 
+    #         pic_obj = beauty.objects.get(id=pic_id)
+    #         pic_obj.liker.add(self.request.user.id)
+    #         pic_obj.save()
+    #         return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
+    #     else:
+    #         return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片 ID 不正确 or 已经赞过了。"})
+
+    @action(methods=['get'], detail=True, url_path="add_like", permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,))
+    def add_like(self, request, pk, *args, **kwargs):      
+        pic_obj = self.get_object()
+        if self.request.user not in pic_obj.liker.all():         
             pic_obj.liker.add(self.request.user.id)
             pic_obj.save()
             return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
         else:
             return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片 ID 不正确 or 已经赞过了。"})
 
- 
     # @action(methods=['get', 'delete', 'patch'], detail=True, url_path="manager")
     # def manager(self, request, pk, *args, **kwargs):
     #     queryset =  beauty.objects.all().filter(id=pk)
@@ -205,7 +215,6 @@ class beauties_local_manager(viewsets.ModelViewSet):
 
 def beauties_list(request):
     list = beauty.objects.all().filter(is_delete=False)
-    list_local = beauty_local.objects.all().filter(is_delete=False)
     paginator = Paginator(list, 10)
     if request.method == "GET": 
         page = request.GET.get('page') # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
