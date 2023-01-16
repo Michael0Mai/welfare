@@ -60,11 +60,11 @@ class beauties(viewsets.ModelViewSet):
     def add_like(self, request, pk, *args, **kwargs):      
         pic_obj = self.get_object()
         if self.request.user not in pic_obj.liker.all():         
-            pic_obj.liker.add(self.request.user.id)
+            pic_obj.liker.add(self.request.user)
             pic_obj.save()
             return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
         else:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "图片 ID 不正确 or 已经赞过了。"})
+            return Response(status=status.HTTP_403_FORBIDDEN, data={"detail": "已经赞过了"})
 
     # @action(methods=['get', 'delete', 'patch'], detail=True, url_path="manager")
     # def manager(self, request, pk, *args, **kwargs):
@@ -176,7 +176,7 @@ class beauties_local(viewsets.ModelViewSet):
         had_liked = beauty_local.objects.values('liker').filter(Q(id=pic_id) & ~Q(liker__id__contains=self.request.user.id)).exists() # 同时检查图片存在和是否已经赞过
         if had_liked:
             pic_obj = beauty_local.objects.get(id=pic_id)  
-            pic_obj.liker.add(self.request.user.id)
+            pic_obj.liker.add(self.request.user)
             pic_obj.save()
             return Response(status=status.HTTP_200_OK, data={"detail": "点赞成功。", "status_code": 200})
         else:

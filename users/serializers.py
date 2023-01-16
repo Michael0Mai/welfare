@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission
 from django.contrib.auth.models import Group
+from pic.serializers import beauty_address_only_serializer, beauty_local_path_only_serializer
 
 class permission_serializer(serializers.ModelSerializer):
     class Meta:
@@ -58,3 +59,8 @@ class user_serializer_create(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         return user
+
+class user_serializer_had_liked(serializers.Serializer):
+    username = serializers.CharField()
+    like_by = beauty_address_only_serializer(many=True, read_only=True)
+    local_like_by = beauty_local_path_only_serializer(many=True, read_only=True)

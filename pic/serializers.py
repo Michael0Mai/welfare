@@ -126,6 +126,12 @@ class create_beauty_local_serializer(serializers.ModelSerializer):
         # fields = "__all__"
         exclude = ("liker", "created_time", "is_delete")
 
+class beauty_local_path_only_serializer(serializers.ModelSerializer):
+     class Meta:
+        model = beauty_local
+        fields = ('file_path',)
+        read_only_fields = ('file_path',)
+
 # class liker_only_serializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = beauty

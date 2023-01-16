@@ -12,7 +12,8 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
         'address_web': '简略网址列表页',
         'download': '根据ID下载图片',
         'change_password': '修改密码',
-        'add_like': '点赞'
+        'add_like': '点赞',
+        'had_liked': '已赞'
     }
     def get_tags(self, operation_keys=None):
         tags = super().get_tags(operation_keys)

@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from rest_framework.decorators import action
 from django.contrib.auth.hashers import check_password, make_password
+from pic.serializers import beauty_address_only_serializer, beauty_local_path_only_serializer
 
 class users(viewsets.ModelViewSet):
     queryset =  User.objects.filter(~Q(is_superuser = 1)).all()
@@ -59,6 +60,8 @@ class current_user(viewsets.ReadOnlyModelViewSet):
     def get_serializer_class(self):
         if self.action == "list":
             return user_serializer
+        elif self.action == "had_liked":
+            return user_serializer_had_liked
         else:
             return user_serializer_change_password
     def retrieve(self, request, *args, **kwargs):
@@ -81,6 +84,13 @@ class current_user(viewsets.ReadOnlyModelViewSet):
         # 未知错误，报服务器内部错误
         except Exception as error:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={"detail": "服务器内部错误"})
+    
+    @action(methods=['get'], detail=False, url_path="had_liked", permission_classes = (permissions.IsAuthenticated,))
+    def had_liked(self, request, *args, **kwargs):
+        queryset = User.objects.filter(id = self.request.user.id)
+        liked_pic = user_serializer_had_liked(instance=queryset ,many=True)
+        return Response(liked_pic.data)
+
 
 # class permission(viewsets.ReadOnlyModelViewSet):
 #     queryset =  Permission.objects.all()
