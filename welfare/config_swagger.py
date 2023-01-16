@@ -12,7 +12,6 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
         'address_web': '简略网址列表页',
         'download': '根据ID下载图片',
         'change_password': '修改密码',
-        'img_upload': '上传图片',
         'add_like': '点赞'
     }
     def get_tags(self, operation_keys=None):
@@ -28,9 +27,12 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
     
     def get_operation_id(self, operation_keys=None): # 每个 API 的 operation_id 需要唯一
         view_tags = getattr(self.view, 'tags', [])
-        if view_tags:
+        if view_tags and operation_keys[-1] in self.method_map:
             operation_id = view_tags[0] + "-" + self.method_map[operation_keys[-1]]
-            # print(operation_id)
-        else:
+        elif view_tags and operation_keys[-1] not in self.method_map:
+            operation_id = operation_id = view_tags[0] + "-" + operation_keys[-1]
+        elif not view_tags and operation_keys[-1] in self.method_map:
             operation_id = '-'.join(operation_keys[0:-1]) + "-" + self.method_map[operation_keys[-1]]
+        else:
+            operation_id = '-'.join(operation_keys)
         return operation_id
