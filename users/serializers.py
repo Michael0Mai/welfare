@@ -62,5 +62,11 @@ class user_serializer_create(serializers.ModelSerializer):
 
 class user_serializer_had_liked(serializers.Serializer):
     username = serializers.CharField()
-    like_by = beauty_address_only_serializer(many=True, read_only=True)
-    local_like_by = beauty_local_path_only_serializer(many=True, read_only=True)
+    like_by = serializers.SerializerMethodField()
+    local_like_by = serializers.SerializerMethodField()
+
+    def get_like_by(self, obj):
+        return beauty_address_only_serializer(obj.like_by.filter(is_delete=False), many=True, read_only=True).data
+    
+    def get_local_like_by(self, obj):
+        return beauty_local_path_only_serializer(obj.local_like_by.filter(is_delete=False), many=True, read_only=True).data
