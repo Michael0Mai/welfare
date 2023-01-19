@@ -9,7 +9,6 @@ from drf_yasg.utils import swagger_auto_schema
 from django.utils.decorators import method_decorator
 from rest_framework.decorators import action
 from django.contrib.auth.hashers import check_password, make_password
-from pic.serializers import beauty_address_only_serializer, beauty_local_path_only_serializer
 
 class users(viewsets.ModelViewSet):
     queryset =  User.objects.filter(~Q(is_superuser = 1)).all()
