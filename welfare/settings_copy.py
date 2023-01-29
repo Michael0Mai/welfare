@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'django_filters',
-    'corsheaders',
+    'video',
     'pic',
 ]
 
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',        #支持中文语言
-    "corsheaders.middleware.CorsMiddleware",
+    # "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',  #支持跨域
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -61,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',    
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True # 如果为True，则将不使用白名单，并且将接受所有来源。默认为False	
+# CORS_ORIGIN_ALLOW_ALL = True # 如果为True，则将不使用白名单，并且将接受所有来源。默认为False	
 ROOT_URLCONF = 'welfare.urls'
 
 TEMPLATES = [
@@ -125,7 +125,6 @@ SIMPLE_JWT = {
 SWAGGER_SETTINGS = {
     'DEFAULT_AUTO_SCHEMA_CLASS': 'welfare.config_swagger.CustomSwaggerAutoSchema',
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

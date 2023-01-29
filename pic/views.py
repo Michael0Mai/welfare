@@ -149,6 +149,8 @@ class beauties_local(viewsets.ModelViewSet):
     @action(methods=['get'], detail=True, url_path="download")
     def download(self, request, *args, **kwargs): # 文件下载,访问 http://xx.xx.xx.xx:8000/....../[id]/download/ 链接，即可直接下载
         file_obj = self.get_object()
+        if os.path.basename(file_obj).split('.')[-1].lower() not in ['jpg', 'jpeg', 'png', 'gif']: # 只能下载图片
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"detail": "图片不存在"})
         response = FileResponse(open(file_obj.file_path.path, 'rb'))
         return response
     
@@ -242,9 +244,6 @@ def beauties_local_list(request):
         except EmptyPage: # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
             pic_list = paginator.page(paginator.num_pages)
     return render(request, 'beauty_pic_list.html', {"pic_list": pic_list, "is_local": True})
-
-
-
 
 # @csrf_exempt
 # def add_like(request):

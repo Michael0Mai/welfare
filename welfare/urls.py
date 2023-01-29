@@ -29,6 +29,7 @@ urlpatterns = [
     path('secret_manager/', admin.site.urls), # 真的后台地址
     
     path('pic/', include("pic.urls")),
+    path('video/', include("video.urls")),
     path('users/', include("users.urls")),
 
     url('status_codes/', views.status_codes), 

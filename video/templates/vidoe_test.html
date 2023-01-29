@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>视频流测试</title>
+    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js""></script>
+</head>
+
+<body>
+    <p>视频流测试</p>
+    <video id="media" src="" width="640" height="480" controls autoplay>您的浏览器不支持 video 标签 </video>
+    </video>
+</body>
+
+<script>
+    $(function () {
+            $("#media").attr('src', 'http://127.0.0.1:8000/video/video_local/ed28a809-ede5-4228-89b9-06de357251bc/video_play/');
+     })
+
+</script>
+
+</html>

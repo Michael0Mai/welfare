@@ -13,7 +13,8 @@ class CustomSwaggerAutoSchema(SwaggerAutoSchema):
         'download': '根据ID下载图片',
         'change_password': '修改密码',
         'add_like': '点赞',
-        'had_liked': '已赞'
+        'had_liked': '已赞',
+        'video_play':'视频流播放'
     }
     def get_tags(self, operation_keys=None):
         tags = super().get_tags(operation_keys)

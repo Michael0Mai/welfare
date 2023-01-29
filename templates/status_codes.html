@@ -1,79 +1,10 @@
 <html>
     <head></head>
     <body>
-        <div class="codes">
-            <table>
-                <caption>状态码</caption>
-                <thead>
-                    <tr>
-                        <th>状态码</th> <th>请求方式</th> <th>含义</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>200 OK</td>
-                        <td>GET</td>
-                        <td>服务器成功返回用户请求的数据, 该操作是幂等的(Idempotent)</td>
-                    </tr>     
-                    <tr>
-                        <td>201 CREATED</td>
-                        <td>POST/PUT/PATCH</td>
-                        <td>用户新建或修改数据成功</td>
-                    </tr>  
-                    <tr>
-                        <td>202 Accepted</td>
-                        <td>*</td>
-                        <td>表示一个请求已经进入后台排队(异步任务)</td>
-                    </tr>  
-                    <tr>
-                        <td>204 NO CONTENT</td>
-                        <td>DELETE</td>
-                        <td>用户删除数据成功</td>
-                    </tr>  
-                    <tr>
-                        <td>400 INVALID REQUEST</td>
-                        <td>POST/PUT/PATCH</td>
-                        <td>用户发出的请求有错误, 服务器没有进行新建或修改数据的操作, 该操作是幂等的</td>
-                    </tr>  
-                    <tr>
-                        <td>401 Unauthorized</td>
-                        <td>*</td>
-                        <td>表示用户没有权限(令牌、用户名、密码错误)</td>
-                    </tr>  
-                    <tr>
-                        <td>403 Forbidden</td>
-                        <td>*</td>
-                        <td>表示用户得到授权(与401错误相对), 但是访问是被禁止的</td>
-                    </tr>  
-                    <tr>
-                        <td>404 NOT FOUND</td>
-                        <td>*</td>
-                        <td>用户发出的请求针对的是不存在的记录, 服务器没有进行操作, 该操作是幂等的</td>
-                    </tr>               
-                    <tr>
-                        <td>406 Not Acceptable</td>
-                        <td>GET</td>
-                        <td>用户请求的格式不可得(比如用户请求JSON格式, 但是只有XML格式)</td>
-                    </tr>  
-                    <tr>
-                        <td>410 Gone</td>
-                        <td>GET</td>
-                        <td>用户请求的资源被永久删除, 且不会再得到的</td>
-                    </tr>  
-                    <tr>
-                        <td>422 Unprocesable entity</td>
-                        <td>POST/PUT/PATCH</td>
-                        <td>当创建一个对象时, 发生一个验证错误</td>
-                    </tr>  
-                    <tr>
-                        <td>500 INTERNAL SERVER ERROR</td>
-                        <td>*</td>
-                        <td>服务器发生错误</td>
-                    </tr>   
-                    
-
-                </tbody>                
-            </table>
+        <div class="status_codes">
+            
+        </div>
+        <div class="request_codes">
             <table>
                 <caption>
                     请求方式
@@ -86,12 +17,12 @@
                 <tbody>
                     <tr>
                         <td>GET/collection</td>
-                        <td>资源对象的列表（数组）</td>
+                        <td>资源对象的列表(数组)</td>
                     </tr>  
                     <tr>
                         <td>GET/collection/response</td>
                         <td>单个资源对象</td>
-                    </tr>  
+                    </tr>
                     <tr>
                         <td>POST/collection</td>
                         <td>新生成的资源对象</td>
@@ -115,7 +46,12 @@
 </html>
 
 <style>
-    div.codes{
+    div.status_codes{
+        font-size: 18px;
+        margin: 20px;
+    }
+
+    div.request_codes{
         font-size: 18px;
         margin: 20px;
     }
@@ -161,6 +97,31 @@
     }
 </style>
 
+<script>
+    window.onload=function(){build_status_code();};
 
+    function build_status_code(){
+        var data = store_status_code();
+        // var text = '<table><caption>状态码</caption><thead><tr><th>状态码</th> <th>请求方式</th> <th>REST_代码</th><th>含义</th></tr></thead><tbody>';
+        var text = '<table><caption>状态码</caption><thead><tr><th>状态码</th> <th>REST_代码</th> <th>含义</th></tr></thead><tbody>';
+        for(let i=0; i<data.length; i++){
+            text += '<tr>' +
+                '<td>' + data[i].状态码.toUpperCase() + '</td>' +
+                '<td>' + data[i].REST_代码 + '</td>' +
+                '<td>' + data[i].含义 + '</td>' +
+                '</tr> ';
+        };
+        text += '</tbody></table>'
+        document.getElementsByClassName("status_codes")[0].innerHTML = text;
+    };
+                    
+
+    function store_status_code(){
+        var data = '[{"状态码":"200 OK","请求方式":"GET","REST_代码":"HTTP_200_OK","含义":"服务器成功返回用户请求的数据, 该操作是幂等的(Idempotent)"},{"状态码":"201 CREATED","请求方式":"POST/PUT/PATCH","REST_代码":"HTTP_201_CREATED","含义":"请求已完成, 并导致创建新资源"},{"状态码":"202 Accepted","请求方式":"*","REST_代码":"HTTP_202_ACCEPTED","含义":"表示一个请求已经进入后台排队(异步任务)"},{"状态码":"203 NON AUTHORITATIVE INFORMATION","请求方式":"","REST_代码":"HTTP_203_NON_AUTHORITATIVE_INFORMATION","含义":"非权威信息"},{"状态码":"204 NO CONTENT","请求方式":"DELETE","REST_代码":"HTTP_204_NO_CONTENT","含义":"用户删除数据成功"},{"状态码":"205 RESET CONTENT","请求方式":"","REST_代码":"HTTP_205_RESET_CONTENT","含义":"重置内容"},{"状态码":"206 PARTIAL CONTENT","请求方式":"","REST_代码":"HTTP_206_PARTIAL_CONTENT","含义":"服务器已完成对资源的部分GET请求。部分内容"},{"状态码":"207 MULTI STATUS","请求方式":"","REST_代码":"HTTP_207_MULTI_STATUS","含义":"多状态: 由WebDAV(RFC 2518)扩展的状态码, 代表之后的消息体将是一个XML消息, 并且可能依照之前子请求数量的不同, 包含一系列独立的响应代码"},{"状态码":"300 MULTIPLE CHOICES","请求方式":"","REST_代码":"HTTP_300_MULTIPLE_CHOICES","含义":"请求的资源具有多种选择"},{"状态码":"301 MOVED PERMANENTLY","请求方式":"","REST_代码":"HTTP_301_MOVED_PERMANENTLY","含义":"已为所请求的资源分配了一个新的永久URI: 永久移动"},{"状态码":"302 FOUND","请求方式":"","REST_代码":"HTTP_302_FOUND","含义":"请求的网页被转移到一个新的地址, 但客户访问仍继续通过原始URL地址, 重定向, 新的URL会在response中的Location中返回, 浏览器将会使用新的URL发出新的Request"},{"状态码":"303 SEE OTHER","请求方式":"","REST_代码":"HTTP_303_SEE_OTHER","含义":"可以在不同的URI下找到对请求的响应, 并且应该使用该资源上的GET方法检索"},{"状态码":"304 NOT MODIFIE","请求方式":"","REST_代码":"HTTP_304_NOT_MODIFIE","含义":"如果客户端已执行条件GET请求并允许访问, 但文档尚未修改, 则服务器应该响应此状态代码"},{"状态码":"305 USE PROXY","请求方式":"","REST_代码":"HTTP_305_USE_PROXY","含义":"使用代理。必须通过Location字段给出的代理访问所请求的资源"},{"状态码":"306 RESERVED","请求方式":"","REST_代码":"HTTP_306_RESERVED","含义":"306状态代码在规范的先前版本中使用, 不再使用, 并且代码被保留"},{"状态码":"307 TEMPORARY REDIRECT","请求方式":"","REST_代码":"HTTP_307_TEMPORARY_REDIRECT","含义":"临时重定向。请求的资源暂时驻留在不同的URI下"},{"状态码":"400 INVALID REQUEST","请求方式":"POST/PUT/PATCH","REST_代码":"HTTP_400_BAD_REQUEST","含义":"用户发出的请求有错误, 服务器没有进行新建或修改数据的操作, 该操作是幂等的"},{"状态码":"401 Unauthorized","请求方式":"*","REST_代码":"HTTP_401_UNAUTHORIZED","含义":"表示用户没有权限(令牌、用户名、密码错误)"},{"状态码":"403 Forbidden","请求方式":"*","REST_代码":"HTTP_403_FORBIDDEN","含义":"表示用户得到授权(与401错误相对), 但是访问是被禁止的"},{"状态码":"404 NOT FOUND","请求方式":"*","REST_代码":"HTTP_404_NOT_FOUND","含义":"用户发出的请求针对的是不存在的记录, 服务器没有进行操作, 该操作是幂等的"},{"状态码":"405 METHOD NOT ALLOWED","请求方式":"","REST_代码":"HTTP_405_METHOD_NOT_ALLOWED","含义":"客户端请求中的方法被禁止"},{"状态码":"406 Not Acceptable","请求方式":"GET","REST_代码":"HTTP_406_NOT_ACCEPTABLE","含义":"用户请求的格式不可得(比如用户请求JSON格式, 但是只有XML格式)"},{"状态码":"407 PROXY AUTHENTICATION REQUIRED","请求方式":"","REST_代码":"HTTP_407_PROXY_AUTHENTICATION_REQUIRED","含义":"此代码类似于401(未授权), 但表示客户端必须首先使用代理进行身份验证"},{"状态码":"408 REQUEST TIMEOUT","请求方式":"","REST_代码":"HTTP_408_REQUEST_TIMEOUT","含义":"请求超时。客户端在服务器准备等待的时间内没有产生请求"},{"状态码":"409 CONFLICT","请求方式":"","REST_代码":"HTTP_409_CONFLICT","含义":"由于与资源的当前状态冲突, 无法完成请求"},{"状态码":"410 Gone","请求方式":"GET","REST_代码":"HTTP_410_GONE","含义":"用户请求的资源被永久删除, 且不会再得到的"},{"状态码":"411 LENGTH REQUIRED","请求方式":"","REST_代码":"HTTP_411_LENGTH_REQUIRED","含义":"服务器无法处理客户端发送的不带Content-Length的请求信息"},{"状态码":"412 PRECONDITION FAILED","请求方式":"","REST_代码":"HTTP_412_PRECONDITION_FAILED","含义":"在服务器上测试时, 一个或多个请求标头字段中给出的前提条件被评估为false"},{"状态码":"413 REQUEST ENTITY TOO LARGE","请求方式":"","REST_代码":"HTTP_413_REQUEST_ENTITY_TOO_LARGE","含义":"服务器拒绝处理请求, 因为请求实体大于服务器能够处理的请求实体"},{"状态码":"414 REQUEST URI TOO LONG","请求方式":"","REST_代码":"HTTP_414_REQUEST_URI_TOO_LONG","含义":"请求的资源URL长于服务器允许的长度"},{"状态码":"415 UNSUPPORTED MEDIA TYPE","请求方式":"","REST_代码":"HTTP_415_UNSUPPORTED_MEDIA_TYPE","含义":"服务器无法处理请求附带的媒体格式"},{"状态码":"416 REQUESTED RANGE NOT SATISFIABLE","请求方式":"","REST_代码":"HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE","含义":"客户端请求的范围无效"},{"状态码":"417 EXPECTATION FAILED","请求方式":"","REST_代码":"HTTP_417_EXPECTATION_FAILED","含义":"服务器不满足请求Expect头字段指定的期望值, 如果是代理服务器, 可能是下一级服务器不能满足请求长"},{"状态码":"422 Unprocesable entity","请求方式":"POST/PUT/PATCH","REST_代码":"HTTP_422_UNPROCESSABLE_ENTITY","含义":"当创建一个对象时, 发生一个验证错误"},{"状态码":"423 LOCKED","请求方式":"","REST_代码":"HTTP_423_LOCKED","含义":"锁定；当前资源被锁定"},{"状态码":"424 FAILED DEPENDENCY","请求方式":"","REST_代码":"HTTP_424_FAILED_DEPENDENCY","含义":"错误接洽关系。由于之前的某个请求发生的错误, 导致当前请求失败, 例如 PROPPATCH"},{"状态码":"428 PRECONDITION REQUIRED","请求方式":"","REST_代码":"HTTP_428_PRECONDITION_REQUIRED","含义":"要求先决条件；先决条件是客户端发送 HTTP 请求时, 如果想要请求能成功必须满足一些预设的条件"},{"状态码":"429 TOO MANY REQUESTS","请求方式":"","REST_代码":"HTTP_429_TOO_MANY_REQUESTS","含义":"请求过多"},{"状态码":"431 REQUEST HEADER FIELDS TOO LARGE","请求方式":"","REST_代码":"HTTP_431_REQUEST_HEADER_FIELDS_TOO_LARGE","含义":"请求头字段太大"},{"状态码":"451 UNAVAILABLE FOR LEGAL REASONS","请求方式":"","REST_代码":"HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS","含义":"因法律原因而被官方审查"},{"状态码":"500 INTERNAL SERVER ERROR","请求方式":"*","REST_代码":"HTTP_500_INTERNAL_SERVER_ERROR","含义":"服务器发生错误"},{"状态码":"501 NOT IMPLEMENTED","请求方式":"","REST_代码":"HTTP_501_NOT_IMPLEMENTED","含义":"服务器不支持请求的功能, 无法完成请求"},{"状态码":"502 BAD GATEWAY","请求方式":"","REST_代码":"HTTP_502_BAD_GATEWAY","含义":"服务器在充当网关或代理时, 在尝试完成请求时从其访问的上游服务器收到无效响应"},{"状态码":"503 SERVICE UNAVAILABLE","请求方式":"","REST_代码":"HTTP_503_SERVICE_UNAVAILABLE","含义":"服务不可用；由于服务器的临时过载或维护, 服务器当前无法处理请求。一般为暂时性的"},{"状态码":"504 GATEWAY TIMEOUT","请求方式":"","REST_代码":"HTTP_504_GATEWAY_TIMEOUT","含义":"作为网关或代理服务器, 服务器没有收到来自URI指定的上游服务器的及时响应(例如HTTP、FTP、LDAP)或尝试完成时需要访问的其他辅助服务器(例如DNS)请求"},{"状态码":"505 VERSION NOT SUPPORTED","请求方式":"","REST_代码":"HTTP_505_HTTP_VERSION_NOT_SUPPORTED","含义":"服务器不支持或拒绝支持请求消息中使用的HTTP协议版本"},{"状态码":"507 INSUFFICIENT STORAGE","请求方式":"","REST_代码":"HTTP_507_INSUFFICIENT_STORAGE","含义":"存储空间不足"},{"状态码":"511 NETWORK AUTHENTICATION REQUIRED","请求方式":"","REST_代码":"HTTP_511_NETWORK_AUTHENTICATION_REQUIRED","含义":"网络认证请求；如果你频繁使用笔记本和智能手机, 你可能会注意到大量的公用 WIFI 服务要求你必须接受一些协议或者必须登录后才能使用"}]';
+        var obj = JSON.parse(data);   
+        // var obj = eval('('+data+')')
+        return obj; 
+    };
+</script>
 
 

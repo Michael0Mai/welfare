@@ -3,6 +3,8 @@
 python manage.py makemigrations pic  # 让 Django 知道我们在我们的模型有一些变更
 python manage.py migrate pic   # 创建表结构
 
+python manage.py makemigrations video  # 让 Django 知道我们在我们的模型有一些变更
+python manage.py migrate video   # 创建表结构
 
 python manage.py createsuperuser
 
